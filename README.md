@@ -1,16 +1,24 @@
-# Blackwell (sm_120) Patch for PyTorch
+# 🧠 Blackwell (sm_120) Patch for PyTorch
 
-This patch adds support for NVIDIA's next-gen Blackwell GPUs (`sm_120`) to PyTorch's build system.
+**🚀 Unlock full RTX 5080 performance in PyTorch!**  
+PyTorch does not yet support `sm_120` (Blackwell) natively — so I built custom CUDA 12.8 drivers and patched the PyTorch build system.
 
-## What It Does
+This repo includes the patch, a script, and build instructions.
 
-✅ Adds `Blackwell` as a CUDA architecture alias  
-✅ Enables `sm_120` compilation via `TORCH_CUDA_ARCH_LIST`  
-✅ Useful for forward compatibility with RTX 5090 / B100
+---
 
-## Usage
+## ✅ What It Does
 
+- ✅ Adds `"Blackwell"` as a CUDA architecture alias
+- ✅ Enables `sm_120` compilation via `TORCH_CUDA_ARCH_LIST`
+- ✅ Future-ready for RTX 5090, B100, GB200 series
+- ✅ Compatible with CUDA 12.8, PyTorch 2.5.0+
+
+---
+
+## 🛠 Usage
+
+### Step 1 – Clone PyTorch and This Patch Repo
 ```bash
 git clone --recursive https://github.com/pytorch/pytorch
-cd pytorch
-/path/to/torch-blackwell-patch/patch_blackwell.sh
+git clone https://github.com/kentstone84/pytorch-rtx5080-support.git
