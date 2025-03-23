@@ -1,23 +1,16 @@
-# 🚀 PyTorch Support for RTX 5080 (sm_120) – CUDA 12.8  
+# Blackwell (sm_120) Patch for PyTorch
 
-### ✅ **What is this?**
-PyTorch **does not support the NVIDIA RTX 5080 (sm_120) GPU natively**, which means AI developers **cannot take full advantage of its power**. This project **fixes that** by building **custom CUDA 12.8 PyTorch binaries** and adding **RTX 5080 support** for AI workloads.
+This patch adds support for NVIDIA's next-gen Blackwell GPUs (`sm_120`) to PyTorch's build system.
 
----
+## What It Does
 
-## **⚡ Features**
-- **Full PyTorch CUDA Support for RTX 5080**
-- **Optimized drivers for CUDA 12.8**
-- **Prebuilt wheels & source build guide**
-- **Matrix multiplication & AI model benchmarks**
-- **Docker container setup for easy builds**
-- **Works with: TensorRT, FlashAttention, LLaMA, Stable Diffusion, etc.**
+✅ Adds `Blackwell` as a CUDA architecture alias  
+✅ Enables `sm_120` compilation via `TORCH_CUDA_ARCH_LIST`  
+✅ Useful for forward compatibility with RTX 5090 / B100
 
----
+## Usage
 
-## **📥 Installation**
-### **🔹 Option 1: Use Prebuilt PyTorch Binaries**
-1. Download the **prebuilt PyTorch CUDA 12.8 wheels** from the [Releases](https://github.com/YOUR_USERNAME/RTX5080-PyTorch/releases) page.
-2. Install it:
-   ```bash
-   pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+```bash
+git clone --recursive https://github.com/pytorch/pytorch
+cd pytorch
+/path/to/torch-blackwell-patch/patch_blackwell.sh

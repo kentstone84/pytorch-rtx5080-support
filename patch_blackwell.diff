@@ -1,0 +1,6 @@
+--- a/cmake/Modules_CUDA_fix/select_compute_arch.cmake
++++ b/cmake/Modules_CUDA_fix/select_compute_arch.cmake
+@@
++  elseif(${arch_name} STREQUAL "Blackwell")
++    set(arch_bin 12.0)
++    set(arch_ptx 12.0)
