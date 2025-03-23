@@ -19,6 +19,20 @@ This repo includes the patch, a script, and build instructions.
 ## 🛠 Usage
 
 ### Step 1 – Clone PyTorch and This Patch Repo
-```bash
 git clone --recursive https://github.com/pytorch/pytorch
 git clone https://github.com/kentstone84/pytorch-rtx5080-support.git
+
+### Step 2 – Apply Patch
+cd pytorch
+../pytorch-rtx5080-support/patch_blackwell.sh
+
+### Step 3 – Build PyTorch
+export TORCH_CUDA_ARCH_LIST="Blackwell"
+python setup.py install
+
+
+✅ Test It Worked
+  python
+    import torch
+    print(torch.cuda.get_device_properties(0))
+    # Should show major=12, minor=0 → sm_120
