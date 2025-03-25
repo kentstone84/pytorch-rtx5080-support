@@ -1,6 +1,12 @@
---- a/cmake/Modules_CUDA_fix/select_compute_arch.cmake
-+++ b/cmake/Modules_CUDA_fix/select_compute_arch.cmake
-@@
-+  elseif(${arch_name} STREQUAL "Blackwell")
-+    set(arch_bin 12.0)
-+    set(arch_ptx 12.0)
+diff --git a/cmake/public/cuda.cmake b/cmake/public/cuda.cmake
+index abcdef1..1234567 100644
+--- a/cmake/public/cuda.cmake
++++ b/cmake/public/cuda.cmake
+@@ -200,6 +200,9 @@
+     list(APPEND TORCH_CUDA_ARCH_LIST "8.9")
+   endif()
+ 
++  # Add Blackwell support manually
++  list(APPEND TORCH_CUDA_ARCH_LIST "12.0")
++
+ endif()
