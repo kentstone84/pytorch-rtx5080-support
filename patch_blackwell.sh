@@ -1,9 +1,16 @@
 #!/bin/bash
+
 set -e
 
 echo "[+] Patching PyTorch for Blackwell (sm_120)..."
 
-# Apply patch
-patch -p1 < patch_blackwell.diff
+PATCH_FILE="$(dirname "$0")/patch_blackwell.diff"
 
-echo "[✓] Patch applied successfully. You can now build with TORCH_CUDA_ARCH_LIST=\"Blackwell\""
+if [ ! -f "$PATCH_FILE" ]; then
+    echo "[!] Patch file not found: $PATCH_FILE"
+    exit 1
+fi
+
+patch -p1 < "$PATCH_FILE"
+
+echo "[+] Patch applied successfully."
