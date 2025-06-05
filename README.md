@@ -36,3 +36,53 @@ python setup.py install
     import torch
     print(torch.cuda.get_device_properties(0))
     # Should show major=12, minor=0 → sm_120
+
+
+How to Run the Project on Windows Using Command Prompt (CMD)
+Step 1: Open Command Prompt
+Press Win + R, type cmd, then press Enter.
+
+Step 2: Navigate to Your Project Folder
+Use the cd command to change directories.
+
+Example if your project folder is on the Desktop:
+
+bash
+Copy
+Edit
+cd Desktop\tic_tac_toe_modern
+If your folder path contains spaces, use quotes:
+
+bash
+Copy
+Edit
+cd "C:\Users\YourUserName\Desktop\tic_tac_toe_modern"
+Step 3: Verify You’re in the Right Folder
+Type:
+
+bash
+Copy
+Edit
+dir
+You should see your project files listed.
+
+Step 4: Run Your Script or Command
+If you have a batch file (.bat) or command script, just type its name, for example:
+
+Copy
+Edit
+path_blackwell.bat
+For shell scripts (.sh), it’s best to use Git Bash or Windows Subsystem for Linux (WSL) to run:
+
+bash
+Copy
+Edit
+./path_blackwell.sh
+Pro Tips:
+You can open the terminal directly in the folder by Shift + Right Click inside the folder and selecting:
+
+Open PowerShell window here or
+
+Open Command Window here
+
+Double-clicking shell scripts on Windows may not work without the right shell environment installed.
