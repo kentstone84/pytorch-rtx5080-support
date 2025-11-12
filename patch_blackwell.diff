@@ -1,0 +1,16 @@
+diff --git a/cmake/public/cuda.cmake b/cmake/public/cuda.cmake
+index abcdef1..1234567 100644
+--- a/cmake/public/cuda.cmake
++++ b/cmake/public/cuda.cmake
+@@ -200,6 +200,12 @@
+     list(APPEND TORCH_CUDA_ARCH_LIST "8.9")
+   endif()
+
++  # === Begin Blackwell (sm_120) CUDA Architecture Support ===
++  # NVIDIA Blackwell architecture corresponds to CUDA compute capability 12.0 (sm_120).
++  # This architecture is not yet supported natively in official PyTorch builds,
++  # so we manually append it here to enable compilation for RTX 5080/5090 GPUs.
++  list(APPEND TORCH_CUDA_ARCH_LIST "12.0")
++  # === End Blackwell support patch ===
++
+ endif()
