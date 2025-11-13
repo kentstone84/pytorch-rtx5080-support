@@ -2,6 +2,28 @@
 
 Native Blackwell architecture support for NVIDIA GeForce RTX 5080 on Windows 11, with Triton compiler for custom high-performance CUDA kernels.
 
+## 🚀 Quick Start
+
+```powershell
+# 1. Download and extract the release
+# 2. Create virtual environment
+python -m venv pytorch-env
+.\pytorch-env\Scripts\Activate.ps1
+
+# 3. Run installer (installs PyTorch + optional Triton)
+.\install.ps1
+
+# 4. Test it
+python -c "import torch; print(f'GPU: {torch.cuda.get_device_name(0)}, SM: {torch.cuda.get_device_capability(0)}')"
+python benchmark_triton.py  # Run Triton benchmarks
+```
+
+**What you get:**
+- ✅ PyTorch 2.10.0a0 with native SM 12.0 (20-30% faster than nightlies)
+- ✅ Triton compiler for custom CUDA kernels in Python
+- ✅ Production-ready examples and benchmarks
+- ✅ Native Windows (no WSL required!)
+
 ## Overview
 
 This is a custom-built PyTorch 2.10.0a0 package compiled with **native SM 12.0 (Blackwell) support** for Windows. Unlike PyTorch nightlies which only provide PTX backward compatibility (~70-80% performance), this build includes optimized CUDA kernels specifically compiled for RTX 5080.
@@ -14,6 +36,16 @@ Official PyTorch releases currently only support up to SM 8.9 (Ada Lovelace/RTX 
 - Lacks Blackwell-specific optimizations
 
 This build solves that problem with native SM 12.0 compilation.
+
+### Why Native Windows (Not WSL)?
+
+**Performance Advantages:**
+- **Direct driver access** - No virtualization overhead
+- **Lower latency** - No translation layer between Windows and Linux
+- **Better compatibility** - Native Windows apps and tools work seamlessly
+- **Simpler workflow** - One environment, no dual OS management
+
+WSL2 is great, but native Windows with proper CUDA support is simply faster and more efficient.
 
 ### 🔺 Triton Support - Game Changer for Windows!
 
@@ -90,11 +122,13 @@ python -m venv pytorch-env
 ```
 
 The installer will:
-1. Check Python version compatibility
-2. Verify CUDA installation
-3. Install required dependencies
+1. Check Python version compatibility (3.10 or 3.11)
+2. Verify CUDA installation and GPU detection
+3. Install required dependencies automatically
 4. Copy PyTorch to your site-packages
-5. Verify the installation
+5. Verify PyTorch installation with CUDA
+6. **Optionally install Triton** (recommended for custom kernels)
+7. Verify Triton JIT compilation (if installed)
 
 ### Method 2: Manual Installation
 
@@ -286,20 +320,9 @@ Examples include:
 - Fused Linear + Bias + ReLU
 - Flash Attention (simplified)
 
-## License
-
-PyTorch is released under the BSD-3-Clause license. See the [PyTorch repository](https://github.com/pytorch/pytorch) for details.
-
-This package is compiled from the official PyTorch source code with no modifications except for the architecture target.
-
-## Contributing
-
-If you encounter issues or have improvements:
-1. Open an issue describing the problem
-2. Include your GPU model, driver version, and error messages
-3. Provide steps to reproduce
-
 ## Getting Started with Triton
+
+Now that you've seen what Triton can do, let's write your first custom kernel!
 
 ### Your First Triton Kernel
 
@@ -368,6 +391,19 @@ z = add(x, y)
 - Standard PyTorch operations already meet your needs
 - You're not familiar with GPU programming concepts yet
 - The operation is already optimized in cuDNN/cuBLAS
+
+## License
+
+PyTorch is released under the BSD-3-Clause license. See the [PyTorch repository](https://github.com/pytorch/pytorch) for details.
+
+This package is compiled from the official PyTorch source code with no modifications except for the architecture target.
+
+## Contributing
+
+If you encounter issues or have improvements:
+1. Open an issue describing the problem
+2. Include your GPU model, driver version, and error messages
+3. Provide steps to reproduce
 
 ## Acknowledgments
 
