@@ -1,0 +1,49 @@
+# PyTorch RTX 5080 - Windows Requirements
+# Install with: pip install -r requirements.txt
+
+# Core Dependencies (installed by install.ps1)
+filelock
+fsspec
+Jinja2
+MarkupSafe
+mpmath
+networkx
+sympy
+typing-extensions>=4.10.0
+
+# Triton for Windows (optional but recommended)
+triton-windows<3.6
+
+# Additional ML/AI Libraries
+numpy>=1.24.0
+pillow>=10.0.0
+tqdm>=4.65.0
+
+# HuggingFace Integration
+transformers>=4.35.0
+accelerate>=0.24.0
+safetensors>=0.4.0
+
+# For Jupyter Notebooks
+jupyter>=1.0.0
+ipykernel>=6.25.0
+matplotlib>=3.7.0
+
+# Performance Monitoring
+psutil>=5.9.0
+nvidia-ml-py3>=7.352.0
+
+# Quantization Support
+bitsandbytes>=0.41.0  # For INT4/INT8 quantization
+
+# Optional: Image Generation
+diffusers>=0.24.0
+
+# Optional: Text Generation
+sentencepiece>=0.1.99
+tokenizers>=0.15.0
+
+# Development Tools (optional)
+pytest>=7.4.0
+black>=23.0.0
+flake8>=6.0.0
