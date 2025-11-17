@@ -9,17 +9,8 @@ from pathlib import Path
 from setuptools import setup, find_packages
 from setuptools.command.install import install
 
-# Ensure we're on Windows
-if sys.platform != "win32":
-    print("ERROR: RTX-STone is currently only supported on Windows.")
-    print("For Linux support, please use WSL2 or wait for native Linux builds.")
-    sys.exit(1)
-
-# Ensure Python version is 3.10 or 3.11
-if sys.version_info < (3, 10) or sys.version_info >= (3, 12):
-    print("ERROR: RTX-STone requires Python 3.10 or 3.11")
-    print(f"Current Python version: {sys.version}")
-    sys.exit(1)
+# Note: We allow building on any platform for CI/CD compatibility
+# Runtime checks happen in the package itself
 
 
 class PostInstallCommand(install):
@@ -27,23 +18,37 @@ class PostInstallCommand(install):
 
     def run(self):
         install.run(self)
-        print("\n" + "=" * 70)
-        print("RTX-STone Installation")
-        print("=" * 70)
-        print("\nNext steps:")
-        print("1. Run verification: python -m rtx_stone.diagnostic")
-        print("2. Check GPU support: rtx-stone-info")
-        print("3. Run benchmarks: rtx-stone-benchmark")
-        print("4. Read documentation: https://github.com/kentstone84/pytorch-rtx5080-support")
-        print("\nSupported GPUs:")
-        print("  - RTX 5090 (24GB)")
-        print("  - RTX 5080 (16GB)")
-        print("  - RTX 5070 Ti (16GB)")
-        print("  - RTX 5070 (12GB)")
-        print("  - All future RTX 50-series GPUs with SM 12.0")
-        print("\nFor issues or questions:")
-        print("  https://github.com/kentstone84/pytorch-rtx5080-support/issues")
-        print("=" * 70 + "\n")
+
+        # Only show platform-specific messages on actual installation (not build)
+        if sys.platform == "win32":
+            print("\n" + "=" * 70)
+            print("RTX-STone Installation")
+            print("=" * 70)
+            print("\nNext steps:")
+            print("1. Run verification: python -m rtx_stone.diagnostic")
+            print("2. Check GPU support: rtx-stone-info")
+            print("3. Run benchmarks: rtx-stone-benchmark")
+            print("4. Read documentation: https://github.com/kentstone84/pytorch-rtx5080-support")
+            print("\nSupported GPUs:")
+            print("  - RTX 5090 (24GB)")
+            print("  - RTX 5080 (16GB)")
+            print("  - RTX 5070 Ti (16GB)")
+            print("  - RTX 5070 (12GB)")
+            print("  - All future RTX 50-series GPUs with SM 12.0")
+            print("\nFor issues or questions:")
+            print("  https://github.com/kentstone84/pytorch-rtx5080-support/issues")
+            print("=" * 70 + "\n")
+        else:
+            print("\n" + "=" * 70)
+            print("RTX-STone Installation")
+            print("=" * 70)
+            print(f"\n⚠ Current platform: {sys.platform}")
+            print("RTX-STone is optimized for Windows 11 with RTX 50-series GPUs.")
+            print("\nThe optimization modules can be used on other platforms,")
+            print("but the full PyTorch binary is Windows-only.")
+            print("\nFor more information:")
+            print("  https://github.com/kentstone84/pytorch-rtx5080-support")
+            print("=" * 70 + "\n")
 
 
 # Read the long description from README
