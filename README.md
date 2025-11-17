@@ -1,8 +1,31 @@
-# PyTorch 2.10.0a0 + Triton with SM 12.0 Support for RTX 5080 - Windows
+# RTX-STone: PyTorch for RTX 50-Series GPUs
 
-Native Blackwell architecture support for NVIDIA GeForce RTX 5080 on Windows 11, with Triton compiler for custom high-performance CUDA kernels.
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![PyTorch 2.10](https://img.shields.io/badge/PyTorch-2.10.0a0-orange.svg)](https://pytorch.org/)
+[![CUDA 13.0](https://img.shields.io/badge/CUDA-13.0-green.svg)](https://developer.nvidia.com/cuda-toolkit)
+[![SM 12.0](https://img.shields.io/badge/SM-12.0-red.svg)](https://developer.nvidia.com/cuda-gpus)
+[![License](https://img.shields.io/badge/License-BSD--3-lightgrey.svg)](LICENSE)
+
+**Native Blackwell (SM 12.0) support for all NVIDIA RTX 50-series GPUs on Windows**
+
+PyTorch 2.10 with native SM 12.0 compilation + Triton compiler + Optimization suite for RTX 5090, 5080, 5070 Ti, 5070, and all future RTX 50-series GPUs.
 
 ## 🚀 Quick Start
+
+### Option 1: PyPI Installation (Recommended)
+
+```powershell
+# Install RTX-STone from PyPI
+pip install rtx-stone[all]
+
+# Verify installation
+rtx-stone-verify
+
+# Run benchmarks
+rtx-stone-benchmark
+```
+
+### Option 2: Manual Installation
 
 ```powershell
 # 1. Download and extract the release
@@ -23,15 +46,34 @@ python examples/getting_started.py
 python compare_performance.py
 ```
 
+### Option 3: Docker
+
+```powershell
+# Pull and run
+docker pull rtx-stone:latest
+docker run --gpus all -it rtx-stone:latest
+
+# Or build from source
+docker build -t rtx-stone:latest .
+docker-compose up rtx-stone-jupyter
+```
+
 **What you get:**
-- ✅ PyTorch 2.10.0a0 with native SM 12.0 (20-30% faster than nightlies)
-- ✅ Triton compiler for custom CUDA kernels in Python
+- ✅ **PyTorch 2.10.0a0** with native SM 12.0 (20-30% faster than nightlies)
+- ✅ **All RTX 50-series GPUs** supported (5090, 5080, 5070 Ti, 5070)
+- ✅ **Triton compiler** for custom CUDA kernels in Python
 - ✅ **Flash Attention 2** (1.5x faster for long sequences)
 - ✅ **LLM optimization suite** (Llama, Mistral, Qwen support)
 - ✅ **HuggingFace integration** (one-line model optimization)
 - ✅ **Auto-tuning framework** (optimal configs for your GPU)
-- ✅ Production-ready examples and benchmarks
-- ✅ Native Windows (no WSL required!)
+- ✅ **vLLM integration** (high-performance serving)
+- ✅ **LangChain RAG** examples
+- ✅ **ComfyUI optimization** guide
+- ✅ **Multi-GPU support** (DDP, FSDP, tensor parallelism)
+- ✅ **Docker containers** for easy deployment
+- ✅ **Jupyter notebooks** for tutorials
+- ✅ **Production-ready** examples and benchmarks
+- ✅ **Native Windows** (no WSL required!)
 
 ## Overview
 
@@ -90,8 +132,12 @@ This package includes **Triton**, OpenAI's GPU programming language, with full S
 
 ## Supported Hardware
 
-- NVIDIA GeForce RTX 5080
-- NVIDIA GeForce RTX 5090 (also Blackwell SM 12.0)
+All NVIDIA RTX 50-series GPUs with SM 12.0 (Blackwell):
+- **RTX 5090** (24GB VRAM)
+- **RTX 5080** (16GB VRAM)
+- **RTX 5070 Ti** (16GB VRAM)
+- **RTX 5070** (12GB VRAM)
+- All future RTX 50-series GPUs
 
 ## Requirements
 
@@ -538,9 +584,153 @@ If you encounter issues or have improvements:
 - **woct0rdho** for the triton-windows fork
 - Community contributors who helped test this build
 
+## 🐳 Docker Support
+
+RTX-STone is available as Docker containers for easy deployment:
+
+```powershell
+# Development environment
+docker-compose up rtx-stone-dev
+
+# Jupyter notebooks
+docker-compose up rtx-stone-jupyter
+# Access at http://localhost:8888
+
+# vLLM API server
+docker-compose up rtx-stone-vllm
+# API at http://localhost:8000
+
+# Run benchmarks
+docker-compose up rtx-stone-benchmark
+```
+
+See [Dockerfile](Dockerfile) and [docker-compose.yml](docker-compose.yml) for details.
+
+## 📚 Jupyter Notebooks
+
+Interactive tutorials in `notebooks/`:
+
+1. **Getting Started** - Installation verification and basic benchmarks
+2. **Flash Attention** - Optimizing attention mechanisms (coming soon)
+3. **Custom Triton Kernels** - Writing GPU kernels in Python (coming soon)
+4. **LLM Optimization** - Optimizing large language models (coming soon)
+5. **Image Generation** - Stable Diffusion optimization (coming soon)
+
+```powershell
+# Launch Jupyter
+jupyter notebook notebooks/
+```
+
+## 🔌 Integrations
+
+### vLLM (LLM Serving)
+
+High-performance LLM inference serving:
+
+```python
+# See integrations/vllm_integration.py
+python integrations/vllm_integration.py --mode server --model meta-llama/Llama-3.2-3B
+```
+
+### LangChain (RAG)
+
+Build RAG systems with local LLMs:
+
+```python
+# See integrations/langchain_rag_example.py
+python integrations/langchain_rag_example.py --documents ./docs
+```
+
+### ComfyUI (Image Generation)
+
+Optimize ComfyUI workflows:
+- See [ComfyUI Integration Guide](integrations/comfyui_integration.md)
+- 20-30% faster image generation
+- Custom nodes for RTX-STone optimizations
+
+## 🎯 Model Zoo
+
+Pre-tested configurations and benchmarks:
+- [Model Zoo Documentation](MODEL_ZOO.md)
+- Llama 3.2, 3.1 (3B, 8B, 70B)
+- Mistral 7B, Mixtral 8x7B
+- Qwen 2.5
+- SDXL, SD3, FLUX
+- Performance benchmarks for each model
+
+## 🚀 Multi-GPU Support
+
+Distributed training and inference:
+
+```powershell
+# Distributed Data Parallel (DDP)
+torchrun --nproc_per_node=2 examples/multi_gpu/distributed_training.py
+
+# FSDP for large models
+# See examples/multi_gpu/
+
+# Tensor Parallelism with vLLM
+python integrations/vllm_integration.py --tensor-parallel-size 2
+```
+
+## 📊 Benchmarking Suite
+
+Comprehensive performance testing:
+
+```powershell
+# PyTorch benchmarks
+python benchmark.py
+
+# Triton benchmarks
+python benchmark_triton.py
+
+# Full comparison vs PyTorch nightlies
+python compare_performance.py --save-results
+
+# Or use CLI
+rtx-stone-benchmark
+```
+
+## 🛠️ Command Line Tools
+
+Installed with PyPI package:
+
+```powershell
+# Verify installation
+rtx-stone-verify
+
+# Show system info
+rtx-stone-info
+
+# Run benchmarks
+rtx-stone-benchmark
+```
+
+## 📖 Documentation
+
+- [Quick Start Guide](QUICK_START.md)
+- [Model Zoo](MODEL_ZOO.md)
+- [Release Notes](RELEASE_NOTES.md)
+- [Changelog](CHANGELOG.md)
+- [Contributing Guide](.github/CONTRIBUTING.md)
+- [Security Policy](.github/SECURITY.md)
+
 ## Changelog
 
-### v2.10.0a0 + Advanced Suite (November 13, 2025)
+### v2.10.0a0 + Complete Suite (Latest)
+- **NEW:** PyPI package - `pip install rtx-stone`
+- **NEW:** Support for ALL RTX 50-series GPUs (5090, 5080, 5070 Ti, 5070)
+- **NEW:** Docker containers with docker-compose
+- **NEW:** vLLM integration for LLM serving
+- **NEW:** LangChain RAG examples
+- **NEW:** ComfyUI optimization guide
+- **NEW:** Multi-GPU DDP/FSDP examples
+- **NEW:** Jupyter notebooks tutorials
+- **NEW:** Model Zoo with benchmarks
+- **NEW:** CLI tools (rtx-stone-verify, rtx-stone-benchmark)
+- **NEW:** GitHub templates (issues, PRs, contributing)
+- **NEW:** CI/CD workflows
+- **NEW:** Comprehensive documentation
 - **NEW:** Triton compiler integration for Windows
 - **NEW:** Native SM 12.0 Blackwell support in Triton kernels
 - **NEW:** Flash Attention 2 implementation (`flash_attention_rtx5080.py`)
@@ -584,6 +774,39 @@ If you encounter issues or have improvements:
 - CUDA 13.0 compatibility
 - Python 3.10/3.11 support
 
+## 🤝 Contributing
+
+We welcome contributions! See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for guidelines.
+
+Ways to contribute:
+- Report bugs and request features
+- Submit optimized kernels
+- Share benchmarks and configurations
+- Improve documentation
+- Create tutorials and examples
+
+## 📜 License
+
+BSD-3-Clause (same as PyTorch). See [LICENSE](LICENSE) for details.
+
+## 🙏 Acknowledgments
+
+- **PyTorch team** for the excellent framework
+- **OpenAI & Triton community** for democratizing GPU programming
+- **NVIDIA** for CUDA toolkit and Blackwell architecture
+- **woct0rdho** for triton-windows fork
+- **Community contributors** who help test and improve
+
+## 📞 Support
+
+- **Issues**: [GitHub Issues](https://github.com/kentstone84/pytorch-rtx5080-support/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/kentstone84/pytorch-rtx5080-support/discussions)
+- **Security**: See [SECURITY.md](.github/SECURITY.md)
+
+## ⭐ Star History
+
+If this project helped you, consider giving it a star!
+
 ---
 
-Built for the RTX 5080 community.
+**RTX-STone** - Unleash the full power of your RTX 50-series GPU!

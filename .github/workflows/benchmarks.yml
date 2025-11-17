@@ -1,0 +1,161 @@
+name: Performance Benchmarks
+
+on:
+  workflow_dispatch:
+    inputs:
+      benchmark_type:
+        description: 'Type of benchmark to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - pytorch
+          - triton
+          - flash-attention
+          - llm
+  schedule:
+    # Run comprehensive benchmarks weekly
+    - cron: '0 2 * * 0'
+
+jobs:
+  benchmark:
+    name: Run Benchmarks
+    # Requires self-hosted runner with RTX 50-series GPU
+    # runs-on: [self-hosted, windows, rtx-50]
+    runs-on: ubuntu-latest # Placeholder until self-hosted runner available
+    if: false # Disable until self-hosted runner is set up
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Check GPU Information
+        run: |
+          nvidia-smi
+          nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv
+
+      - name: Install RTX-STone
+        run: |
+          python -m venv bench-env
+          .\bench-env\Scripts\Activate.ps1
+          .\install.ps1
+          pip install -r requirements.txt
+
+      - name: Run PyTorch Benchmarks
+        if: inputs.benchmark_type == 'all' || inputs.benchmark_type == 'pytorch'
+        run: |
+          .\bench-env\Scripts\Activate.ps1
+          python benchmark.py --save-results --output=pytorch_bench.json
+
+      - name: Run Triton Benchmarks
+        if: inputs.benchmark_type == 'all' || inputs.benchmark_type == 'triton'
+        run: |
+          .\bench-env\Scripts\Activate.ps1
+          python benchmark_triton.py --save-results --output=triton_bench.json
+
+      - name: Run Flash Attention Benchmarks
+        if: inputs.benchmark_type == 'all' || inputs.benchmark_type == 'flash-attention'
+        run: |
+          .\bench-env\Scripts\Activate.ps1
+          python -c "
+          from flash_attention_rtx5080 import benchmark_flash_attention
+          import json
+          results = benchmark_flash_attention()
+          with open('flash_attention_bench.json', 'w') as f:
+              json.dump(results, f, indent=2)
+          "
+
+      - name: Run LLM Benchmarks
+        if: inputs.benchmark_type == 'all' || inputs.benchmark_type == 'llm'
+        run: |
+          .\bench-env\Scripts\Activate.ps1
+          python -c "
+          from llm_inference_optimized import benchmark_llm_inference
+          import json
+          results = benchmark_llm_inference()
+          with open('llm_bench.json', 'w') as f:
+              json.dump(results, f, indent=2)
+          "
+
+      - name: Run Comprehensive Comparison
+        if: inputs.benchmark_type == 'all'
+        run: |
+          .\bench-env\Scripts\Activate.ps1
+          python compare_performance.py --save-results --output=comparison.json
+
+      - name: Generate Benchmark Report
+        run: |
+          python -c "
+          import json
+          import os
+          from datetime import datetime
+
+          report = {
+              'timestamp': datetime.now().isoformat(),
+              'gpu': os.popen('nvidia-smi --query-gpu=name --format=csv,noheader').read().strip(),
+              'driver': os.popen('nvidia-smi --query-gpu=driver_version --format=csv,noheader').read().strip(),
+          }
+
+          # Collect all benchmark results
+          for file in ['pytorch_bench.json', 'triton_bench.json', 'flash_attention_bench.json', 'llm_bench.json', 'comparison.json']:
+              if os.path.exists(file):
+                  with open(file) as f:
+                      report[file.replace('.json', '')] = json.load(f)
+
+          with open('benchmark_report.json', 'w') as f:
+              json.dump(report, f, indent=2)
+          "
+
+      - name: Upload Benchmark Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results-${{ github.sha }}
+          path: |
+            *.json
+          retention-days: 90
+
+      - name: Comment PR with Results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('benchmark_report.json', 'utf8'));
+
+            const comment = `## Benchmark Results
+
+            **GPU:** ${report.gpu}
+            **Driver:** ${report.driver}
+            **Timestamp:** ${report.timestamp}
+
+            ### Performance Summary
+            ${JSON.stringify(report, null, 2)}
+
+            <details>
+            <summary>Full Results</summary>
+
+            \`\`\`json
+            ${JSON.stringify(report, null, 2)}
+            \`\`\`
+
+            </details>
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: Update Performance Badge
+        if: github.ref == 'refs/heads/main'
+        run: |
+          # Create badge with latest benchmark results
+          # This would update a gist or generate a badge
+          echo "Performance badge update would go here"

@@ -1,0 +1,123 @@
+name: Bug Report
+description: Report a bug or issue with PyTorch RTX 5080
+title: "[BUG] "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the sections below.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: Tell us what happened
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. Install PyTorch RTX 5080 with '...'
+        2. Run script '...'
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What you expected to happen
+    validations:
+      required: true
+
+  - type: textarea
+    id: code
+    attributes:
+      label: Minimal Code Sample
+      description: Provide a minimal code sample that reproduces the issue
+      render: python
+      placeholder: |
+        import torch
+        # Your code here
+
+  - type: textarea
+    id: error
+    attributes:
+      label: Error Message / Traceback
+      description: Full error message or traceback
+      render: shell
+
+  - type: input
+    id: pytorch-version
+    attributes:
+      label: PyTorch Version
+      description: "Run: python -c 'import torch; print(torch.__version__)'"
+      placeholder: "2.10.0a0+..."
+    validations:
+      required: true
+
+  - type: input
+    id: gpu
+    attributes:
+      label: GPU Model
+      description: "Run: nvidia-smi --query-gpu=name --format=csv,noheader"
+      placeholder: "NVIDIA GeForce RTX 5080"
+    validations:
+      required: true
+
+  - type: input
+    id: driver
+    attributes:
+      label: NVIDIA Driver Version
+      description: "Run: nvidia-smi --query-gpu=driver_version --format=csv,noheader"
+      placeholder: "570.00"
+    validations:
+      required: true
+
+  - type: input
+    id: cuda
+    attributes:
+      label: CUDA Version
+      description: "Run: python -c 'import torch; print(torch.version.cuda)'"
+      placeholder: "13.0"
+    validations:
+      required: true
+
+  - type: input
+    id: python
+    attributes:
+      label: Python Version
+      description: "Run: python --version"
+      placeholder: "Python 3.11.5"
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating System
+      description: Windows version and build
+      placeholder: "Windows 11 22H2 (Build 22621.2861)"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: triton
+    attributes:
+      label: Triton Related
+      description: Is this issue related to Triton?
+      options:
+        - label: This issue involves Triton kernels
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context about the problem

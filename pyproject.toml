@@ -1,0 +1,160 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rtx-stone"
+version = "2.10.0a0"
+description = "PyTorch 2.10 with native SM 12.0 (Blackwell) support for NVIDIA RTX 50-series GPUs on Windows"
+readme = "README.md"
+requires-python = ">=3.10,<3.12"
+license = {text = "BSD-3-Clause"}
+authors = [
+    {name = "RTX-STone Contributors"}
+]
+maintainers = [
+    {name = "RTX-STone Contributors"}
+]
+keywords = [
+    "pytorch",
+    "rtx",
+    "rtx-5080",
+    "rtx-5090",
+    "rtx-50-series",
+    "blackwell",
+    "sm-12.0",
+    "cuda",
+    "triton",
+    "deep-learning",
+    "machine-learning",
+    "gpu",
+    "nvidia",
+    "windows",
+    "flash-attention",
+    "llm",
+    "optimization"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Operating System :: Microsoft :: Windows",
+    "Environment :: GPU :: NVIDIA CUDA",
+]
+
+dependencies = [
+    "filelock",
+    "fsspec",
+    "Jinja2",
+    "MarkupSafe",
+    "mpmath",
+    "networkx",
+    "sympy",
+    "typing-extensions>=4.10.0",
+    "numpy>=1.24.0",
+    "pillow>=10.0.0",
+    "tqdm>=4.65.0",
+]
+
+[project.optional-dependencies]
+triton = [
+    "triton-windows<3.6",
+]
+huggingface = [
+    "transformers>=4.35.0",
+    "accelerate>=0.24.0",
+    "safetensors>=0.4.0",
+    "sentencepiece>=0.1.99",
+    "tokenizers>=0.15.0",
+]
+quantization = [
+    "bitsandbytes>=0.41.0",
+]
+image-generation = [
+    "diffusers>=0.24.0",
+]
+monitoring = [
+    "psutil>=5.9.0",
+    "nvidia-ml-py3>=7.352.0",
+]
+notebooks = [
+    "jupyter>=1.0.0",
+    "ipykernel>=6.25.0",
+    "matplotlib>=3.7.0",
+]
+dev = [
+    "pytest>=7.4.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+]
+all = [
+    "rtx-stone[triton,huggingface,quantization,image-generation,monitoring,notebooks]",
+]
+
+[project.urls]
+Homepage = "https://github.com/kentstone84/pytorch-rtx5080-support"
+Documentation = "https://github.com/kentstone84/pytorch-rtx5080-support#readme"
+Repository = "https://github.com/kentstone84/pytorch-rtx5080-support"
+Issues = "https://github.com/kentstone84/pytorch-rtx5080-support/issues"
+Changelog = "https://github.com/kentstone84/pytorch-rtx5080-support/blob/main/CHANGELOG.md"
+
+[project.scripts]
+rtx-stone-verify = "rtx_stone.diagnostic:verify_installation"
+rtx-stone-benchmark = "rtx_stone.diagnostic:run_benchmarks"
+rtx-stone-info = "rtx_stone.diagnostic:show_info"
+
+[tool.setuptools]
+packages = ["rtx_stone"]
+
+[tool.setuptools.package-data]
+rtx_stone = ["*.py", "examples/*.py"]
+
+[tool.black]
+line-length = 100
+target-version = ['py310', 'py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.flake8]
+max-line-length = 100
+extend-ignore = ["E203", "W503"]
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    ".venv",
+]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-v --tb=short"

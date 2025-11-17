@@ -1,0 +1,99 @@
+name: Performance Issue
+description: Report slower than expected performance
+title: "[PERFORMANCE] "
+labels: ["performance", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a performance issue! Detailed benchmarks help us improve.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Performance Issue Description
+      description: What operation is slower than expected?
+      placeholder: Flash Attention is slower than documented...
+    validations:
+      required: true
+
+  - type: textarea
+    id: benchmark
+    attributes:
+      label: Benchmark Results
+      description: Provide actual benchmark numbers
+      placeholder: |
+        Expected: 150ms
+        Actual: 300ms
+        Configuration: batch_size=16, seq_len=2048
+    validations:
+      required: true
+
+  - type: textarea
+    id: code
+    attributes:
+      label: Benchmark Code
+      description: Code used for benchmarking
+      render: python
+      placeholder: |
+        import torch
+        import time
+        # Your benchmark code
+
+  - type: input
+    id: gpu
+    attributes:
+      label: GPU Model
+      placeholder: "RTX 5080 16GB"
+    validations:
+      required: true
+
+  - type: input
+    id: gpu-util
+    attributes:
+      label: GPU Utilization
+      description: "GPU utilization during the operation (from nvidia-smi)"
+      placeholder: "85%"
+
+  - type: input
+    id: memory-usage
+    attributes:
+      label: Memory Usage
+      description: "GPU memory used (from nvidia-smi)"
+      placeholder: "12GB / 16GB"
+
+  - type: dropdown
+    id: precision
+    attributes:
+      label: Precision
+      description: What precision are you using?
+      options:
+        - FP32
+        - FP16
+        - BF16
+        - INT8
+        - INT4
+        - Mixed
+    validations:
+      required: true
+
+  - type: textarea
+    id: comparison
+    attributes:
+      label: Comparison
+      description: How does this compare to other implementations?
+      placeholder: |
+        PyTorch nightly: 200ms
+        This build: 300ms
+        Expected: 150ms
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment Details
+      description: Driver version, CUDA version, Python version, etc.
+      placeholder: |
+        Driver: 570.00
+        CUDA: 13.0
+        Python: 3.11
+        PyTorch: 2.10.0a0+...
