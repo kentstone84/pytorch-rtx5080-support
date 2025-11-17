@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Question or Discussion
+    url: https://github.com/kentstone84/pytorch-rtx5080-support/discussions
+    about: Ask questions or discuss ideas
+  - name: PyTorch Documentation
+    url: https://pytorch.org/docs/
+    about: Official PyTorch documentation
+  - name: Triton Documentation
+    url: https://triton-lang.org/
+    about: Official Triton documentation
