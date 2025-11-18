@@ -22,7 +22,7 @@ By patching **3 hex bytes** in the NVIDIA driver:
 - **Same hardware, same system - just driver patch**
 - **Native sm_120 execution** finally working as intended
 
-**Read the full analysis:** [DRIVER_GATEKEEPING_ANALYSIS.md](DRIVER_GATEKEEPING_ANALYSIS.md)
+**Read the full analysis:** [docs/DRIVER_GATEKEEPING_ANALYSIS.md](docs/DRIVER_GATEKEEPING_ANALYSIS.md)
 
 ---
 
@@ -70,7 +70,7 @@ python compare_performance.py
 
 If you already have PyTorch 2.7+ and just want to unlock true sm_120 performance:
 
-**See detailed guide:** [patch_driver_sm120.md](patch_driver_sm120.md)
+**See detailed guide:** [docs/patch_driver_sm120.md](docs/patch_driver_sm120.md)
 
 **Quick overview:**
 1. Use Ghidra to find 3 sm_120 rejection functions in NVIDIA driver
@@ -709,7 +709,7 @@ Optimize ComfyUI workflows:
 ## 🎯 Model Zoo
 
 Pre-tested configurations and benchmarks:
-- [Model Zoo Documentation](MODEL_ZOO.md)
+- [Model Zoo Documentation](docs/MODEL_ZOO.md)
 - Llama 3.2, 3.1 (3B, 8B, 70B)
 - Mistral 7B, Mixtral 8x7B
 - Qwen 2.5
@@ -766,10 +766,10 @@ rtx-stone-benchmark
 
 ## 📖 Documentation
 
-- [Quick Start Guide](QUICK_START.md)
-- [Model Zoo](MODEL_ZOO.md)
-- [Release Notes](RELEASE_NOTES.md)
-- [Changelog](CHANGELOG.md)
+- [Quick Start Guide](docs/QUICK_START.md)
+- [Model Zoo](docs/MODEL_ZOO.md)
+- [Release Notes](docs/RELEASE_NOTES.md)
+- [Changelog](docs/CHANGELOG.md)
 - [Contributing Guide](.github/CONTRIBUTING.md)
 - [Security Policy](.github/SECURITY.md)
 
@@ -787,10 +787,10 @@ rtx-stone-benchmark
 - **Exposed silent fallback to sm_89** even with "official" PyTorch 2.7 sm_120 support
 
 **NEW Documentation:**
-- [DRIVER_GATEKEEPING_ANALYSIS.md](DRIVER_GATEKEEPING_ANALYSIS.md) - Technical analysis of driver restrictions
-- [DRIVER_PATCH_METHODOLOGY.md](DRIVER_PATCH_METHODOLOGY.md) - Reverse engineering process
-- [patch_driver_sm120.md](patch_driver_sm120.md) - Step-by-step patching guide
-- [REDDIT_RESPONSE.md](REDDIT_RESPONSE.md) - Context on PyTorch 2.7 vs driver reality
+- [docs/DRIVER_GATEKEEPING_ANALYSIS.md](docs/DRIVER_GATEKEEPING_ANALYSIS.md) - Technical analysis of driver restrictions
+- [docs/DRIVER_PATCH_METHODOLOGY.md](docs/DRIVER_PATCH_METHODOLOGY.md) - Reverse engineering process
+- [docs/patch_driver_sm120.md](docs/patch_driver_sm120.md) - Step-by-step patching guide
+- [docs/REDDIT_RESPONSE.md](docs/REDDIT_RESPONSE.md) - Context on PyTorch 2.7 vs driver reality
 
 ### v2.10.0a0 + Complete Suite
 - **NEW:** PyPI package - `pip install rtx-stone`
