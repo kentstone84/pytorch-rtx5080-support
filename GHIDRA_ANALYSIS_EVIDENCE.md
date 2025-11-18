@@ -53,17 +53,30 @@ Location    | String Content
 
 **How it was found:**
 1. String search for "sm_120" → Found references in driver
-2. Scalar search for 0x2c → Found rejection status byte
-3. Cross-referenced to find validation logic → Led to function FUN_00f682d0 (address 00f682d0)
-4. Analyzed function behavior → Identified sm_120 rejection pattern
-5. Patched 3 specific bytes → Bypassed the restriction
+2. Cross-referenced sm_120 strings → Led to **FUN_005e0020** (uses sm_120 strings 7 times)
+3. Scalar search for 0x2c → Found rejection status byte in validation functions
+4. Traced call hierarchy → FUN_00f682d0 (primary) → FUN_005e0020 (validation)
+5. Identified sm_120 rejection pattern in subfunctions
+6. Patched 3 specific bytes → Bypassed the restriction
 
-## The Central Gatekeeping Function: FUN_00f682d0
+## The Gatekeeping Function Hierarchy
 
+### FUN_00f682d0 - Primary Orchestrator
 **Function address:** `00f682d0` (in libcuda.so.1.1)
 **Ghidra label:** `FUN_00f682d0`
+**Purpose:** Primary architecture validation orchestrator
 
-**Purpose:** Architecture capability validation
+### FUN_005e0020 - sm_120 String Handler
+**Function address:** `005e0020` (in libcuda.so.1.1)
+**Ghidra label:** `FUN_005e0020`
+**Purpose:** Processes sm_120 architecture strings
+
+**Cross-references to sm_120 strings:**
+- `"sm_120"` → 7 references in FUN_005e0020 (offsets: 005e1720, 005e17e6, 005e17e9, 005e17f6, 005e1819, 005e1845, and more)
+- `"compute_120"` → 5 references in FUN_005e0020 (offsets: 005e16fa, 005e17c7, 005e17c9, 005e17cc, 005e180b)
+- `"-D__CUDA_ARCH__=1200"` → Referenced in validation logic
+
+**This function is directly involved in sm_120 validation**
 
 **Behavior (stock driver):**
 ```
