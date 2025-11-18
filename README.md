@@ -17,9 +17,9 @@ Through reverse engineering with Ghidra, we discovered NVIDIA's driver **activel
 ### The Proof
 
 By patching **3 hex bytes** in the NVIDIA driver:
-- **RTX 5080 PerformanceTest score: 43,000 points** 🚀
-- **Exceeds GPUs that cost significantly more**
-- **~40% faster** than stock driver on same hardware
+- **3D Graphics Mark: 29,604 → 47,616** (+60.8% improvement!) 🚀
+- **GPU Compute: 23,650** (unlocked performance)
+- **Same hardware, same system - just driver patch**
 - **Native sm_120 execution** finally working as intended
 
 **Read the full analysis:** [DRIVER_GATEKEEPING_ANALYSIS.md](DRIVER_GATEKEEPING_ANALYSIS.md)
@@ -141,8 +141,8 @@ This is a custom-built PyTorch 2.10.0a0 package compiled with **native SM 12.0 (
 1. PyTorch with native sm_120 compilation ✅
 2. **Driver analysis and patches** to bypass restrictions ✅
 3. **True native Blackwell execution** ✅
-4. **43,000 PerformanceTest score on RTX 5080** ✅
-5. **40% better performance than stock driver** ✅
+4. **3D Graphics Mark: 47,616** (vs 29,604 stock) ✅
+5. **60% better performance than stock driver** ✅
 
 This build solves BOTH problems: PyTorch compilation AND driver gatekeeping.
 
@@ -781,7 +781,8 @@ rtx-stone-benchmark
 - **Reverse-engineered NVIDIA driver** with Ghidra
 - **Found 3 functions** that reject native sm_120 kernel execution
 - **Created driver patches** (3 hex bytes) to bypass restrictions
-- **Validated 40% performance improvement** - RTX 5080 @ 43,000 PerformanceTest points
+- **Validated 60% performance improvement** - 3D Graphics Mark: 29,604 → 47,616
+- **GPU Compute subscore: 23,650** (unlocked Blackwell performance)
 - **Documented full methodology** for community verification
 - **Exposed silent fallback to sm_89** even with "official" PyTorch 2.7 sm_120 support
 
