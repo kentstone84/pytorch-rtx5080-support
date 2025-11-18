@@ -35,14 +35,65 @@ Location    | String Content
 
 ## Methodology: Combining String Search + Scalar Search
 
-## Key Functions Containing 0x2c References
+### The Key Discovery: Function FUN_00f682d0 and Its Subfunctions
 
-Based on Ghidra scalar search results, the following functions have multiple references to the `0x2c` status byte:
+**Primary function:** `FUN_00f682d0` (originator at address 00f682d0)
 
-### Primary Suspect Functions
+**All 3 hex patches were in subfunctions called by FUN_00f682d0**
 
-**FUN_00283dcb** - Contains the most 0x2c references (appears 19 times in search results)
-- Assembly operations: `MOV`, `CMP`, memory access patterns
+**FUN_00f682d0** is the **primary architecture validation function** that:
+- Orchestrates GPU compute capability checks
+- Calls subfunctions to validate specific architectures
+- Aggregates results from validation subfunctions
+
+**The subfunctions** (called by FUN_00f682d0) actually:
+- Perform the sm_120 architecture check
+- Return rejection status (0x2c) for Blackwell
+- Force fallback to sm_89 (Ada Lovelace)
+
+**How it was found:**
+1. String search for "sm_120" → Found references in driver
+2. Scalar search for 0x2c → Found rejection status byte
+3. Cross-referenced to find validation logic → Led to function FUN_00f682d0 (address 00f682d0)
+4. Analyzed function behavior → Identified sm_120 rejection pattern
+5. Patched 3 specific bytes → Bypassed the restriction
+
+## The Central Gatekeeping Function: FUN_00f682d0
+
+**Function address:** `00f682d0` (in libcuda.so.1.1)
+**Ghidra label:** `FUN_00f682d0`
+
+**Purpose:** Architecture capability validation
+
+**Behavior (stock driver):**
+```
+Input: GPU architecture identifier (sm_120 for Blackwell)
+Process: Check against allowed architectures
+For sm_120: Return REJECT (status 0x2c)
+Result: Caller falls back to sm_89 (Ada)
+```
+
+**Behavior (after patch):**
+```
+Input: GPU architecture identifier (sm_120 for Blackwell)
+Process: Check against allowed architectures
+For sm_120: Return ACCEPT (patched to allow)
+Result: Native Blackwell execution proceeds
+```
+
+## The 3 Hex Patches
+
+All 3 modifications were **in or related to function 00f682ea**:
+
+**Patch 1:** Modified function behavior for sm_120 check
+**Patch 2:** Changed rejection path to acceptance path
+**Patch 3:** Bypassed or altered return status
+
+**Result:** Function FUN_00f682d0 now accepts sm_120 instead of rejecting it
+
+## Other Functions Containing 0x2c References
+
+Based on Ghidra scalar search results, these functions also reference the `0x2c` status byte (but were NOT the primary patch targets):
 - Likely architecture validation/capability checking
 - **Strong candidate for sm_120 rejection logic**
 
