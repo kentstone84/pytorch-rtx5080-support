@@ -1,0 +1,42 @@
+{
+  "_comment": "RTX 50-Series Driver Patch Configuration",
+  "_instructions": "Fill in the values below with your Ghidra findings. See GHIDRA_TODO.md for step-by-step instructions.",
+
+  "driver_version": "570.00",
+  "platform": "linux",
+
+  "patches": [
+    {
+      "name": "Subfunction 1 - sm_120 check bypass",
+      "offset": "0xDEADBEEF",
+      "original_byte": "0x00",
+      "new_byte": "0x01",
+      "_todo": "REPLACE: Find this in Ghidra, look for conditional jump (JE/JZ) that rejects sm_120"
+    },
+    {
+      "name": "Subfunction 2 - capability acceptance",
+      "offset": "0xCAFEBABE",
+      "original_byte": "0x00",
+      "new_byte": "0x01",
+      "_todo": "REPLACE: Find this in Ghidra, look for return value that sends 0x2c rejection status"
+    },
+    {
+      "name": "Subfunction 3 - validation gate",
+      "offset": "0xDEADC0DE",
+      "original_byte": "0x00",
+      "new_byte": "0x01",
+      "_todo": "REPLACE: Find this in Ghidra, look for final validation check before allowing sm_120"
+    }
+  ],
+
+  "_verification": {
+    "expected_performance_gain": "60%",
+    "before_3d_mark": 29604,
+    "after_3d_mark": 47616,
+    "functions_involved": [
+      "FUN_00f682d0 (primary orchestrator)",
+      "FUN_005e0020 (sm_120 string handler with 7 references)",
+      "3 subfunctions called by FUN_00f682d0"
+    ]
+  }
+}
